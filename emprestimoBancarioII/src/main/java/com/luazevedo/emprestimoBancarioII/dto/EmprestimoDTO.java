@@ -1,6 +1,5 @@
 package com.luazevedo.emprestimoBancarioII.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,12 +16,14 @@ public class EmprestimoDTO {
     @NotNull(message = "O ID não pode ser nulo")
     private Long id;
 
-    @NotBlank(message = "O valor não pode ser vazio")
+    @NotNull(message = "O valor não pode ser nulo")
     private BigDecimal valor;
 
-    @NotBlank(message = "A data do empréstimo não pode ser vazio")
+    @NotNull(message = "A data do empréstimo não pode ser nula")
     private LocalDate dataEmprestimo;
 
-    @NotBlank(message = "A data de término não pode ser vazio")
+    @NotNull(message = "A data de término não pode ser nula")
     private LocalDate dataTermino;
+
+    private BigDecimal taxaJuros;
 }

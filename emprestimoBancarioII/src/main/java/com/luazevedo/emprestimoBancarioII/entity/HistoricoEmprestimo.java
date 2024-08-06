@@ -11,7 +11,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_historicoEmprestimos")
+@Table(name = "historicoEmprestimo")
 public class HistoricoEmprestimo {
 
     @Id

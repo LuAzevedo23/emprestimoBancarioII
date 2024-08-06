@@ -14,11 +14,11 @@ import java.math.BigDecimal;
 public class GarantiaDTO {
 
     @NotNull(message = "O ID não pode ser nulo")
-    private Long id;
+    Long id;
 
     @NotBlank(message = "O campo descrição não pode ser vazio")
-    private String descricao;
+    String descricao;
 
     @NotBlank(message = "O valor não pode ser vazio")
-    private BigDecimal valor;
+    BigDecimal valor;
 }

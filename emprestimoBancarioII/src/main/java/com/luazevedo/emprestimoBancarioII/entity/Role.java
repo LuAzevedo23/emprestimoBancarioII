@@ -11,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_roles")
+@Table(name = "role")
 public class Role {
 
     @Id
@@ -20,6 +20,6 @@ public class Role {
 
     private String nome;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "role")
     private Set<Usuario> usuarios;
 }

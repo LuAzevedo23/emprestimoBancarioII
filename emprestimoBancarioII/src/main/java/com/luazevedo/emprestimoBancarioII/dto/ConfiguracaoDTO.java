@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 public class ConfiguracaoDTO {
 
     @NotNull(message = "O ID não pode ser nulo")
-    private Long id;
+    Long id;
 
     @NotBlank(message = "A chave não pode ser vazia")
-    private String chave;
+    String chave;
 
     @NotBlank(message = "O valor não pode ser vazio")
-    private String valor;
+    String valor;
 }

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_pagamentos")
+@Table(name = "pagamento")
 public class Pagamento {
 
     @Id
@@ -31,7 +31,8 @@ public class Pagamento {
     private Emprestimo emprestimo;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column()
+    //antes esta assim @Column(nullable = true) e o professor falou por padrão deixar ()
     private StatusPagamento status;
 }
 

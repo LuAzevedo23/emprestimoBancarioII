@@ -26,7 +26,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProvider);
 
-        http
+        http.authorizeRequests(authorizeRequests ->
+                authorizeRequests
+                        .requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
+        );
+
+        /*http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/public/**").permitAll()
@@ -39,7 +45,7 @@ public class SecurityConfig {
                 )
                 .logout(LogoutConfigurer::permitAll
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);*/
 
         return http.build();
     }

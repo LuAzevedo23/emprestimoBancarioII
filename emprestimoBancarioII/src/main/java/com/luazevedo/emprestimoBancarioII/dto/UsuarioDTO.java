@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 public class UsuarioDTO {
 
     @NotNull(message = "O ID não pode ser nulo")
-    private Long id;
+    Long id;
 
     @NotBlank(message = "O nome não pode ser vazio")
-    private String username;
+    String username;
 
     @NotBlank(message = "A senha não pode ser vazia")
-    private String senha;
+    String senha;
 }

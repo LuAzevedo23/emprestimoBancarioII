@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,15 +13,16 @@ import lombok.NoArgsConstructor;
 public class ClienteDTO {
 
     @NotNull(message = "O ID não pode ser nulo")
-    private Long id;
+    @JsonProperty("id")
+    Long id;
 
     @NotBlank(message = "O nome não pode ser vazio")
-    private String nome;
+    String nome;
 
     @NotBlank(message = "O email não pode ser vazio")
-    private String email;
+    String email;
 
     @NotBlank(message = "O telefone não pode ser vazio")
-    private String telefone;
+    String telefone;
 
 }

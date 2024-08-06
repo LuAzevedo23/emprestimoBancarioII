@@ -19,7 +19,7 @@ public class UserDetailsImpl implements UserDetails {
         this.id = usuario.getId();
         this.username = usuario.getUsername();
         this.senha = usuario.getSenha();
-        this.authorities = usuario.getRoles().stream()
+        this.authorities = usuario.getRole().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getNome()))
                 .collect(Collectors.toList());
     }
