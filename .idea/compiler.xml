@@ -12,5 +12,9 @@
         <module name="emprestimoBancarioII.emprestimoBancarioII.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="emprestimoBancarioII.emprestimoBancarioII.main~1" target="17" />
+      <module name="emprestimoBancarioII.emprestimoBancarioII.test~1" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
