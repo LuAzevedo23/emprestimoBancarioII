@@ -5,6 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidade que representa um cliente no sistema de empréstimos bancários.
+ * Um cliente pode solicitar empréstimos, que serão vinculados a esta entidade.
+ *
+ * @author Luciene Azevedo
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +37,7 @@ public class Cliente {
 
     @Column(nullable = false)
     private String cpf;
-
-
 }
+
+
+

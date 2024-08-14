@@ -7,6 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
+/**
+ * Entidade que representa o histórico de eventos de um empréstimo.
+ * Armazena informações sobre eventos relevantes ocorridos durante a vigência de um empréstimo.
+ *
+ * @author Luciene Azevedo
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +24,9 @@ public class HistoricoEmprestimo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Instant dataEvento;
+
     private String descricao;
 
     @ManyToOne

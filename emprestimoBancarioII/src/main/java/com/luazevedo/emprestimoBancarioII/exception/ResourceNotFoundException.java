@@ -1,4 +1,4 @@
-package com.luazevedo.emprestimoBancarioII.json.response;
+package com.luazevedo.emprestimoBancarioII.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * Entidade que representa um usuário do sistema.
+ * Um usuário pode ter múltiplos papéis, que determinam suas permissões dentro do sistema.
+ *
+ * @author Luciene Azevedo
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +36,7 @@ public class Usuario {
     )
     private Set<Role> role;
 }
+
 
 /*
 COMO AS ANOTATIONS FUNCIONAM AQUI.

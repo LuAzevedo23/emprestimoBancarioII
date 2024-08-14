@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Entidade que representa um pagamento realizado para um empréstimo.
+ * Armazena informações sobre o valor pago e a data do pagamento.
+ *
+ * @author Luciene Azevedo
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +26,16 @@ public class Pagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "valor", nullable = false)
     private BigDecimal valor;
 
-    @Column(nullable = false)
+    @Column(name = "taxa_juros", nullable = false)
+    private BigDecimal taxaJuros;
+
+    @Column(name = "prazo_meses", nullable = false)
+    private Integer prazoMeses;
+
+    @Column(name = "data_pagamento", nullable = false)
     private LocalDate dataPagamento;
 
     @ManyToOne
@@ -31,8 +43,9 @@ public class Pagamento {
     private Emprestimo emprestimo;
 
     @Enumerated(EnumType.STRING)
-    @Column()
-    //antes esta assim @Column(nullable = true) e o professor falou por padrão deixar ()
+    @Column(name = "status", nullable = false)
     private StatusPagamento status;
-}
 
+    @Column(name = "valor_total", nullable = false)
+    private BigDecimal valorTotal;
+}

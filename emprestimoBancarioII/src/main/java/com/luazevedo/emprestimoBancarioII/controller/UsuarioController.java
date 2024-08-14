@@ -3,7 +3,7 @@ package com.luazevedo.emprestimoBancarioII.controller;
 import com.luazevedo.emprestimoBancarioII.dto.UsuarioDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Usuario;
 import com.luazevedo.emprestimoBancarioII.exception.AbstractMinhaException;
-import com.luazevedo.emprestimoBancarioII.exception.ExceptionResponse;
+import com.luazevedo.emprestimoBancarioII.json.response.ExceptionResponse;
 import com.luazevedo.emprestimoBancarioII.mapper.UsuarioMapper;
 import com.luazevedo.emprestimoBancarioII.repository.UsuarioRepository;
 import com.luazevedo.emprestimoBancarioII.service.UsuarioService;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
     @Autowired
@@ -68,7 +68,7 @@ public class UsuarioController {
 
     @ExceptionHandler(AbstractMinhaException.class)
     public ResponseEntity<ExceptionResponse> handleAbstractMinhaException(AbstractMinhaException ex, HttpServletRequest request) throws IOException {
-        ExceptionResponse response = new ExceptionResponse(ex.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        ExceptionResponse response = new ExceptionResponse(ex, request.getRequestURI());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
