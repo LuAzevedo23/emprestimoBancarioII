@@ -7,6 +7,10 @@ import com.luazevedo.emprestimoBancarioII.json.response.ExceptionResponse;
 import com.luazevedo.emprestimoBancarioII.mapper.ConfiguracaoMapper;
 import com.luazevedo.emprestimoBancarioII.repository.ConfiguracaoRepository;
 import com.luazevedo.emprestimoBancarioII.service.ConfiguracaoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/configuracoes")
+@Api(value = "ConfiguracaoController", tags = "Configuracoes")
 public class ConfiguracaoController {
 
     @Autowired
@@ -28,6 +33,17 @@ public class ConfiguracaoController {
     private ConfiguracaoRepository repository;
     @Autowired
     private ConfiguracaoMapper mapper;
+
+    @ApiOperation(value = "Retorna todos as configuracoes", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Configurações retornadas com sucesso"),
+            @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
+            @ApiResponse(code = 404, message = "Recurso não encontrado"),
+            @ApiResponse(code = 422, message = "Dados de requisição inválida"),
+            @ApiResponse(code = 500, message = "Erro ao realizar busca dos dados")
+
+    })
 
     @GetMapping
     public List<ConfiguracaoDTO> findAll() {

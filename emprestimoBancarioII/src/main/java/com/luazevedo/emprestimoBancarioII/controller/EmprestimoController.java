@@ -3,6 +3,12 @@ package com.luazevedo.emprestimoBancarioII.controller;
 import com.luazevedo.emprestimoBancarioII.dto.EmprestimoDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Emprestimo;
 import com.luazevedo.emprestimoBancarioII.service.EmprestimoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +27,23 @@ import java.time.LocalDate;
  */
 @RestController
 @RequestMapping("/emprestimos")
+@RequiredArgsConstructor
+@Api(value = "EmprestimoController", tags = "Emprestimos")
 public class EmprestimoController {
 
     @Autowired
     private EmprestimoService emprestimoService;
+
+    @Operation(summary = "Busca todos os emprestimos", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Busca realizada com sucesso"),
+            @ApiResponse(code = 400, message = "Parametros inválidos"),
+            @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
+            @ApiResponse(code = 404, message = "Recurso não encontrado"),
+            @ApiResponse(code = 422, message = "Dados de requisição inválida"),
+            @ApiResponse(code = 500, message = "Erro ao realizar busca dos dados")
+    })
 
     /**
      * Calcula as parcelas de um empréstimo com base nos parâmetros fornecidos.

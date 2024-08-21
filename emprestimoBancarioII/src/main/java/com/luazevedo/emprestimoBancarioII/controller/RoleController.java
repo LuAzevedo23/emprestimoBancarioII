@@ -5,6 +5,10 @@ import com.luazevedo.emprestimoBancarioII.exception.AbstractMinhaException;
 import com.luazevedo.emprestimoBancarioII.json.response.ExceptionResponse;
 import com.luazevedo.emprestimoBancarioII.repository.RoleRepository;
 import com.luazevedo.emprestimoBancarioII.service.RoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +22,23 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/roles")
+@Api(value = "RoleController", tags = "Roles")
 public class RoleController {
 
     @Autowired
     RoleService service;
     @Autowired
     private RoleRepository repository;
+
+    @ApiOperation(value = "Retorna todos os roles", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Roles retornados com sucesso"),
+            @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
+            @ApiResponse(code = 404, message = "Recurso não encontrado"),
+            @ApiResponse(code = 422, message = "Dados de requisição inválida"),
+            @ApiResponse(code = 500, message = "Erro ao realizar busca dos dados")
+    })
 
     @GetMapping
     public List<Role> findAll() {

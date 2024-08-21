@@ -1,6 +1,7 @@
 package com.luazevedo.emprestimoBancarioII.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Cliente {
     private String endereco;
     private String telefone;
 
+    @Email
     @Column(nullable = false, unique = true)
     private String email;
 

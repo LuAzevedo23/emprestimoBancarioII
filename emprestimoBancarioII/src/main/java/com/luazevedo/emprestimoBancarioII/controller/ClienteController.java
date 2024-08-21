@@ -20,9 +20,11 @@ import java.util.List;
 /**
  * Controller responsável por operações relacionadas a Cliente.
  */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/clientes")
+//@Api(value = "ClienteController", tags = "Clientes")
 public class ClienteController {
 
     @Autowired
@@ -32,6 +34,14 @@ public class ClienteController {
     @Autowired
     private ClienteMapper mapper;
 
+
+    //@ApiOperation(value = "Retorna todos os clientes", response = List.class)
+    //@ApiResponses(value = {
+    //        @ApiResponse(code = 200, message = "Clientes retornados com sucesso"),
+     //       @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
+     //       @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
+      //      @ApiResponse(code = 404, message = "Recurso não encontrado")
+    //})
     /**
      * Retorna todos os clientes.
      *
