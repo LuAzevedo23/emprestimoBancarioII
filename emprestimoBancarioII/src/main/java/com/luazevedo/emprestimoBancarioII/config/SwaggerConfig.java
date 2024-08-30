@@ -23,14 +23,3 @@ public class SwaggerConfig {
     }
 }
 
-/* Essa versão é uma gambiarra, o padrão top é o de cima sempre!
-@Bean
-    public Docket apiDocSwagger() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.luazevedo.emprestimoBancarioII"))
-                .paths(PathSelectors.any())
-                .build();
-    }
-}
- */
