@@ -11,6 +11,12 @@ import java.util.List;
 
 /**
  * Serviço para manipulação das entidades {@link Cliente}.
+ * Contém operações de CRUD e mapeamento de DTOs para a entidade cliente.
+ *
+ * @see ClienteDTO
+ * @see Cliente
+ * @see ClienteMapper
+ * @see ClienteRepository
  */
 
 @Service
@@ -58,7 +64,8 @@ public class ClienteService {
      */
     public Long save(ClienteDTO clienteDTO) {
         Cliente cliente = mapper.paraEntity(clienteDTO);
-        return repository.save(cliente).getId();
+        Cliente clienteSalvo = repository.save(cliente);
+        return clienteSalvo.getId();
     }
 
     /**
@@ -82,12 +89,15 @@ public class ClienteService {
      * @return o ID do Cliente atualizado
      * @throws RuntimeException se o Cliente não for encontrado
      */
-    public Long update(ClienteDTO clienteDTO) {
-        Cliente cliente = mapper.paraEntity(clienteDTO);
-        if (repository.existsById(cliente.getId())) {
-            return repository.save(cliente).getId();
-        } else {
-            throw new RuntimeException("Cliente com id " + cliente.getId() + " não foi encontrado");
-        }
+    public ClienteDTO update(Long id, ClienteDTO clienteDTO) {
+        Cliente clienteExistente = repository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Cliente com id " + id + " não foi encontrado"));
+
+        clienteExistente.setNome((clienteDTO.getNome()));
+        clienteExistente.setEmail((clienteDTO.getEmail()));
+
+        Cliente clienteAtualizado = repository.save(clienteExistente);
+        return mapper.paraDTO((clienteAtualizado));
+
     }
 }

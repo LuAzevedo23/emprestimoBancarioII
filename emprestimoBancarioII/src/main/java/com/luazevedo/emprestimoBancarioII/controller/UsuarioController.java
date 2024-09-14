@@ -61,14 +61,10 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuario salvo com sucesso");
     }
 
-    @PutMapping
-    public ResponseEntity<String> update(@RequestBody UsuarioDTO usuarioDTO) {
-        try {
-            service.update(usuarioDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("Atualização realizada com sucesso!");
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().body("Erro ao atualizar Usuário: " + ex.getMessage());
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO updatedUsuario = service. update(id, usuarioDTO);
+        return ResponseEntity.ok(updatedUsuario);
     }
 
     @DeleteMapping(value = "/{id}")

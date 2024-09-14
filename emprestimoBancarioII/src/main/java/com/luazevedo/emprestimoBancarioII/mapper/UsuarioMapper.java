@@ -3,23 +3,37 @@ package com.luazevedo.emprestimoBancarioII.mapper;
 import com.luazevedo.emprestimoBancarioII.dto.UsuarioDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Usuario;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+/**
+ * Mapper responsável pela conversão entre a entidade Usuário e o DTO UsuarioDTO.
+ */
+
+@Mapper(componentModel = "spring", uses = {RoleMapper.class})
 public interface UsuarioMapper {
 
-    UsuarioMapper INSTANCE = Mappers.getMapper(UsuarioMapper.class);
-
+    // Mapeia de Usuario para UsuarioDTO
+    @Mapping(target = "username", source = "username")
     UsuarioDTO paraDTO(Usuario usuario);
 
-    Usuario paraEntity(UsuarioDTO usuarioDTO);
-
+    //Mapeia lista de Usuario para listsa de UsuarioDTO
     List<UsuarioDTO> paraDTO(List<Usuario> usuarios);
 
-    List<Usuario> paraEntity(List<UsuarioDTO> UsuarioDTO);
+    /**
+     * Converte um UsuarioDTO para uma entidade Usuario.
+     *
+     * @param usuarioDTO O DTO a ser convertido.
+     * @return A entidade Usuario correspondente.
+     */
+    @Mapping(target = "roles", source = "roles")
+    Usuario paraEntity(UsuarioDTO usuarioDTO);
 }
+
+
+
 
 

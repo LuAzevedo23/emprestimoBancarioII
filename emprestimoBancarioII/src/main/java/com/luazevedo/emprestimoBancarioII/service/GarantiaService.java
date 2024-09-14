@@ -2,90 +2,100 @@ package com.luazevedo.emprestimoBancarioII.service;
 
 import com.luazevedo.emprestimoBancarioII.dto.GarantiaDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Garantia;
+import com.luazevedo.emprestimoBancarioII.exception.GarantiaNotFoundException;
 import com.luazevedo.emprestimoBancarioII.mapper.GarantiaMapper;
 import com.luazevedo.emprestimoBancarioII.repository.GarantiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Serviço para manipulação das entidades {@link Garantia}.
+ * Serviço para operações relacionadas a garantias.
+ * Contém métodos para gerenciar operações de garantia.
+ *
+ * @see Garantia
+ * @see GarantiaDTO
+ * @see GarantiaMapper
  */
-
 @Service
 public class GarantiaService {
 
-    private final GarantiaRepository repository;
-    private final GarantiaMapper mapper;
+    private final GarantiaMapper garantiaMapper;
+    private final GarantiaRepository garantiaRepository;
 
     @Autowired
-    public GarantiaService(GarantiaRepository repository, GarantiaMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
+    public GarantiaService(GarantiaRepository garantiaRepository, GarantiaMapper garantiaMapper, GarantiaMapper garantiaMapper1) {
+        this.garantiaRepository = garantiaRepository;
+        this.garantiaMapper = garantiaMapper1;
     }
 
     /**
-     * Encontra todos os {@link Garantia} e os converte para DTOs.
+     * Salva uma nova garantia.
      *
-     * @return uma lista de {@link GarantiaDTO}
+     * @param garantiaDTO O DTO da garantia a ser salva.
+     * @return O DTO da garantia salva.
      */
-    public List<GarantiaDTO> findAll() {
-        List<Garantia> garantias = repository.findAll();
-        return mapper.paraDTO(garantias);
+    public GarantiaDTO save (GarantiaDTO garantiaDTO){
+        Garantia garantia = garantiaMapper.paraEntity(garantiaDTO);
+        Garantia garantiaSalva = garantiaRepository.save(garantia);
+        return garantiaMapper.paraDTO(garantiaSalva);
+    }
+    /**
+     * Encontra uma garantia pelo ID.
+     *
+     * @param id O ID da garantia.
+     * @return O DTO da garantia.
+     * @throws GarantiaNotFoundException Se a garantia não for encontrada.
+     */
+    public GarantiaDTO findById (Long id){
+        Garantia garantia = garantiaRepository.findById(id)
+                .orElseThrow(() -> new GarantiaNotFoundException("Garantia não encontrada com ID: " + id));
+        return garantiaMapper.paraDTO(garantia);
     }
 
     /**
-     * Encontra uma {@link Garantia} pelo ID e a converte para DTO.
-     *
-     * @param id o ID da Garantia
-     * @return o {@link GarantiaDTO} correspondente
-     * @throws RuntimeException se a Garantia não for encontrada
+     * Encontra todas as garantias.
+     * return Uma lista de DTOs de garantias.
      */
-    public GarantiaDTO findById(Long id) {
-        Garantia garantia = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Garantia com id " + id + " não foi encontrada"));
-        return mapper.paraDTO(garantia);
+    public List<GarantiaDTO> findAll(){
+        List<Garantia> garantias = garantiaRepository.findAll();
+        return garantias.stream()
+                .map(garantiaMapper::paraDTO)
+                .collect(Collectors.toList());
+    }
+    /**
+     * Atualiza uma garantia existente.
+     *
+     * @param id               O ID da garantia a ser atualizada.
+     * @param garantiaDTO      O DTO com os novos dados.
+     * @return O DTO da garantia atualizada.
+     * @throws GarantiaNotFoundException Se a garantia não for encontrada.
+     */
+    public GarantiaDTO update(Long id, GarantiaDTO garantiaDTO){
+        Garantia garantiaExistente = garantiaRepository.findById(id)
+                .orElseThrow(() -> new GarantiaNotFoundException("Garantia não encontrada com ID: " + id));
+
+        garantiaExistente.setDescricao((garantiaDTO.getDescricao()));
+        garantiaExistente.setValor(garantiaDTO.getValor());
+
+        Garantia garantiaAtualizada = garantiaRepository.save(garantiaExistente);
+         return garantiaMapper.paraDTO(garantiaAtualizada);
     }
 
     /**
-     * Salva uma nova {@link Garantia} a partir de um DTO.
+     * Deleta uma garantia pelo ID.
      *
-     * @param garantiaDTO o DTO da Garantia a ser salva
-     * @return o ID da Garantia salva
-     */
-    public Long save(GarantiaDTO garantiaDTO) {
-        Garantia garantia = mapper.paraEntity(garantiaDTO);
-        return repository.save(garantia).getId();
-    }
-
-    /**
-     * Deleta uma {@link Garantia} pelo ID.
+     * @param id O ID da garantia a ser deletada.
+     * @throws GarantiaNotFoundException Se a garantia não for encontrada.
      *
-     * @param id o ID da Garantia
-     * @throws RuntimeException se a Garantia não for encontrada
      */
-    public void delete(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-        } else {
-            throw new RuntimeException("Garantia com id " + id + " não foi encontrada");
+    public void delete(Long id){
+        if(!garantiaRepository.existsById(id)){
+            throw new GarantiaNotFoundException("Garantia não encontrada com ID: " + id );
         }
-    }
-
-    /**
-     * Atualiza uma {@link Garantia} existente a partir de um DTO.
-     *
-     * @param garantiaDTO o DTO da Garantia a ser atualizada
-     * @return o ID da Garantia atualizada
-     * @throws RuntimeException se a Garantia não for encontrada
-     */
-    public Long update(GarantiaDTO garantiaDTO) {
-        Garantia garantia = mapper.paraEntity(garantiaDTO);
-        if (repository.existsById(garantia.getId())) {
-            return repository.save(garantia).getId();
-        } else {
-            throw new RuntimeException("Garantia com id " + garantia.getId() + " não foi encontrada");
-        }
+        garantiaRepository.deleteById(id);
     }
 }
+

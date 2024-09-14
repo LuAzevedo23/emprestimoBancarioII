@@ -2,18 +2,18 @@ package com.luazevedo.emprestimoBancarioII.controller;
 
 import com.luazevedo.emprestimoBancarioII.dto.EmprestimoDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Emprestimo;
+import com.luazevedo.emprestimoBancarioII.exception.EmprestimoNotFoundException;
 import com.luazevedo.emprestimoBancarioII.service.EmprestimoService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Controlador para operações relacionadas a empréstimos.
@@ -27,94 +27,64 @@ import java.time.LocalDate;
  */
 @RestController
 @RequestMapping("/emprestimos")
-@RequiredArgsConstructor
 @Api(value = "EmprestimoController", tags = "Emprestimos")
 public class EmprestimoController {
 
     @Autowired
     private EmprestimoService emprestimoService;
 
-    @Operation(summary = "Busca todos os emprestimos", method = "GET")
+    @Operation(summary = "Busca todos os empréstimos", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Busca realizada com sucesso"),
-            @ApiResponse(code = 400, message = "Parametros inválidos"),
+            @ApiResponse(code = 400, message = "Parâmetros inválidos"),
             @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
             @ApiResponse(code = 404, message = "Recurso não encontrado"),
-            @ApiResponse(code = 422, message = "Dados de requisição inválida"),
+            @ApiResponse(code = 422, message = "Dados de requisição inválidos"),
             @ApiResponse(code = 500, message = "Erro ao realizar busca dos dados")
     })
 
-    /**
-     * Calcula as parcelas de um empréstimo com base nos parâmetros fornecidos.
-     * Utiliza o serviço {@link EmprestimoService} para realizar os cálculos.
-     *
-     * @param emprestimo Os dados do empréstimo para cálculo das parcelas.
-     * @return ResponseEntity com o empréstimo com o valor da parcela calculado.
-     */
+    @GetMapping
+    public ResponseEntity<List<EmprestimoDTO>> findAll() {
+        List<EmprestimoDTO> emprestimos = emprestimoService.findAll();
+        return ResponseEntity.ok(emprestimos);
+    }
+
     @PostMapping("/calcular-parcelas")
     public ResponseEntity<Emprestimo> calcularParcelas(@RequestBody Emprestimo emprestimo) {
         Emprestimo emprestimoCalculado = emprestimoService.calcularParcelas(emprestimo);
         return ResponseEntity.ok(emprestimoCalculado);
     }
 
-    /**
-     * Calcula o prazo entre duas datas.
-     * Utiliza o serviço {@link EmprestimoService} para calcular a diferença em meses.
-     *
-     * @param dataInicial A data inicial.
-     * @param dataFinal A data final.
-     * @return O DTO do empréstimo com o prazo calculado.
-     */
     @GetMapping("/calcular-prazo")
     public ResponseEntity<EmprestimoDTO> calcularPrazo(@RequestParam("dataInicial") LocalDate dataInicial,
                                                        @RequestParam("dataFinal") LocalDate dataFinal) {
-        // Cria um DTO com as datas fornecidas
         EmprestimoDTO emprestimoDTO = new EmprestimoDTO();
         emprestimoDTO.setDataEmprestimo(dataInicial);
         emprestimoDTO.setDataTermino(dataFinal);
 
-        // Calcula o prazo entre as datas
         EmprestimoDTO emprestimoCalculado = emprestimoService.calcularPrazoEntreDatas(emprestimoDTO);
-
         return ResponseEntity.ok(emprestimoCalculado);
     }
-        @PostMapping
-    public Long save(@RequestBody EmprestimoDTO emprestimoDTO) {
-        return emprestimoService.save(emprestimoDTO).getId();
+
+    @PostMapping
+    public ResponseEntity<Long> save(@RequestBody EmprestimoDTO emprestimoDTO) {
+        Long id = emprestimoService.save(emprestimoDTO).getId();
+        return ResponseEntity.ok(id);
     }
 
-    /**
-     * Encontra um empréstimo pelo ID.
-     *
-     * @param id O ID do empréstimo.
-     * @return ResponseEntity com o empréstimo encontrado.
-     */
     @GetMapping("/{id}")
     public ResponseEntity<EmprestimoDTO> findById(@PathVariable Long id) {
-        EmprestimoDTO emprestimo = emprestimoService.findById(id);
+        EmprestimoDTO emprestimo = emprestimoService.findById(id); // Apenas chama o método, sem orElseThrow
         return ResponseEntity.ok(emprestimo);
     }
 
-    /**
-     * Atualiza um empréstimo existente.
-     *
-     * @param id         O ID do empréstimo a ser atualizado.
-     * @param emprestimo O empréstimo com os novos dados.
-     * @return ResponseEntity com o empréstimo atualizado.
-     */
     @PutMapping("/{id}")
-    public ResponseEntity<EmprestimoDTO> update(@PathVariable Long id, @RequestBody Emprestimo emprestimo) {
-        EmprestimoDTO emprestimoAtualizado = emprestimoService.update(id, emprestimo);
+    public ResponseEntity<EmprestimoDTO> update(@PathVariable Long id, @RequestBody EmprestimoDTO emprestimoDTO) {
+        EmprestimoDTO emprestimoAtualizado = emprestimoService.update(id, emprestimoDTO);
         return ResponseEntity.ok(emprestimoAtualizado);
     }
 
-    /**
-     * Deleta um empréstimo pelo ID.
-     *
-     * @param id O ID do empréstimo a ser deletado.
-     * @return ResponseEntity com uma mensagem de sucesso.
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         emprestimoService.delete(id);

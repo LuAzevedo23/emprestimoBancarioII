@@ -1,62 +1,50 @@
 package com.luazevedo.emprestimoBancarioII.mapper;
 
+import com.luazevedo.emprestimoBancarioII.dto.ClienteDTO;
 import com.luazevedo.emprestimoBancarioII.dto.EmprestimoDTO;
+import com.luazevedo.emprestimoBancarioII.entity.Cliente;
 import com.luazevedo.emprestimoBancarioII.entity.Emprestimo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface EmprestimoMapper {
 
-    /**
-     * Instância do mapper.
-     */
-    EmprestimoMapper INSTANCE = Mappers.getMapper(EmprestimoMapper.class);
+ /**
+  * Mapeia de Emprestimo para EmprestimoDTO.
+  * @param emprestimo A entidade a ser convertida.
+  * @return O DTO convertido.
+  */
+ @Mapping(target = "valor", ignore = true)
+ @Mapping(target = "taxaJuros", ignore = true)
+ @Mapping(target = "prazoMeses", ignore = true)
+ @Mapping(target = "numeroParcelas", ignore = true)
+ @Mapping(target = "parcela", ignore = true)
+ @Mapping(target = "dataEmprestimo", ignore = true)
+ @Mapping(target = "dataTermino", ignore = true)
+ @Mapping(target = "valorTotal", ignore = true)
+ EmprestimoDTO paraDTO(Emprestimo emprestimo);
 
-    /**
-     * Converte uma entidade {@link Emprestimo} em um DTO {@link EmprestimoDTO}.
-     *
-     * @param entity A entidade de empréstimo.
-     * @return O DTO de empréstimo.
-     */
-    @Mapping(source = "valor", target = "valor")
-    @Mapping(source = "taxaJuros", target = "taxaJuros")
-    @Mapping(source = "prazoMeses", target = "prazoMeses")
-    @Mapping(source = "numeroParcelas", target = "numeroParcelas")
-    @Mapping(source = "parcela", target = "parcela")
-    @Mapping(source = "dataEmprestimo", target = "dataEmprestimo")
-    @Mapping(source = "dataTermino", target = "dataTermino")
-    @Mapping(source = "valorTotal", target = "valorTotal") // Adicione mapeamento ausente
-    EmprestimoDTO paraDTO(Emprestimo entity);
+ /**
+  * Atualiza a entidade Emprestimo com os dados do DTO.
+  * @param emprestimoDTO O DTO com os novos dados.
+  * @param emprestimo A entidade a ser atualizada.
+  *
+  */
+ /**
+  * Mapeia de EmprestimoDTO para Emprestimo.
+  * @param emprestimoDTO O DTO a ser convertido.
+  * @return O objeto Emprestimo convertido.
+  */
+ @Mapping(target = "cliente", source = "cliente") // Mapeia o cliente associado
+ Emprestimo paraEntity(EmprestimoDTO emprestimoDTO);
+ void atualizarEntity(EmprestimoDTO emprestimoDTO, @MappingTarget Emprestimo emprestimo);
 
-    /**
-     * Converte um DTO {@link EmprestimoDTO} em uma entidade {@link Emprestimo}.
-     *
-     * @param dto O DTO de empréstimo.
-     * @return A entidade de empréstimo.
-     */
-    @Mapping(source = "valor", target = "valor")
-    @Mapping(source = "taxaJuros", target = "taxaJuros")
-    @Mapping(source = "prazoMeses", target = "prazoMeses")
-    @Mapping(source = "numeroParcelas", target = "numeroParcelas")
-    @Mapping(source = "parcela", target = "parcela")
-    @Mapping(source = "dataEmprestimo", target = "dataEmprestimo")
-    @Mapping(source = "dataTermino", target = "dataTermino")
-    @Mapping(source = "valorTotal", target = "valorTotal") // Adicione mapeamento ausente
-    @Mapping(target = "id", ignore = true) // Ajuste conforme necessário
-    Emprestimo paraEntity(EmprestimoDTO dto);
-
-    /**
-     * Atualiza uma entidade {@link Emprestimo} com os valores de um DTO {@link EmprestimoDTO}.
-     * <p>
-     * Este método ignora o ID da entidade durante a atualização, pois o ID não deve ser alterado.
-     * </p>
-     *
-     * @param emprestimoDTO O DTO com os dados atualizados.
-     * @param emprestimo    A entidade que será atualizada.
-     */
-    @Mapping(target = "id", ignore = true) // Ignora o ID na atualização
-    void updateEntityFromDTO(EmprestimoDTO emprestimoDTO, @MappingTarget Emprestimo emprestimo);
+ /**
+  * Mapeia de ClienteDTO para Cliente.
+  * @param clienteDTO O DTO do cliente a ser convertido.
+  * @return A entidade Cliente convertida.
+  */
+ Cliente toEntity(ClienteDTO clienteDTO);
 }

@@ -1,7 +1,7 @@
 package com.luazevedo.emprestimoBancarioII.exception;
 
-public class ValorNaoExistenteNaBaseDeDadosException extends AbstractMinhaException {
-    public ValorNaoExistenteNaBaseDeDadosException(String valor) {
-        super(String.format("Valor %s não existente na Base de Dados", valor));
+public class ValorNaoExistenteNaBaseDeDadosException extends RuntimeException {
+    public ValorNaoExistenteNaBaseDeDadosException(String message) {
+        super(message);
     }
 }

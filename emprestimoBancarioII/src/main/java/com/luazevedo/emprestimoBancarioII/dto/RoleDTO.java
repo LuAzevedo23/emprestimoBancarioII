@@ -7,20 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GarantiaDTO {
+public class RoleDTO {
 
-    @JsonProperty
-    @NotNull(message = "O ID não pode ser nulo")
-    Long id;
+    @JsonProperty@NotNull(message = "O ID não pode ser nulo")
+    private Long id;
 
-    @NotBlank(message = "O campo descrição não pode ser vazio")
-    String descricao;
-
-    @NotBlank(message = "O valor não pode ser vazio")
-    BigDecimal valor;
+    @NotBlank(message = "O nome não pode ser vazio")
+    private String nome;
 }

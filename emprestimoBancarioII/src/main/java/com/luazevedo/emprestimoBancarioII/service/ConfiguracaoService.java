@@ -12,6 +12,12 @@ import java.util.List;
 
 /**
  * Serviço para manipulação das entidades {@link Configuracao}.
+ * Realiza operações de CRUD e mapeamento de DTOs para a entidade Configuracao.
+ *
+ * @see ConfiguracaoDTO
+ * @see Configuracao
+ * @see ConfiguracaoMapper
+ * @see ConfiguracaoRepository
  */
 
 @Service

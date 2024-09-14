@@ -2,6 +2,7 @@ package com.luazevedo.emprestimoBancarioII.controller;
 
 import com.luazevedo.emprestimoBancarioII.entity.Role;
 import com.luazevedo.emprestimoBancarioII.exception.AbstractMinhaException;
+import com.luazevedo.emprestimoBancarioII.exception.RoleNotFoundException;
 import com.luazevedo.emprestimoBancarioII.json.response.ExceptionResponse;
 import com.luazevedo.emprestimoBancarioII.repository.RoleRepository;
 import com.luazevedo.emprestimoBancarioII.service.RoleService;
@@ -56,23 +57,22 @@ public class RoleController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Role salvo com sucesso");
     }
 
-    @PutMapping
-    public ResponseEntity<String> update(@RequestBody Role role) {
-        try {
-            service.update(role);
-            return ResponseEntity.status(HttpStatus.OK).body("Atualização realizada com sucesso!");
-        } catch (Exception ex) {
-            return ResponseEntity.internalServerError().body("Erro ao atualizar Role: " + ex.getMessage());
-        }
+    @PutMapping("/{id}")
+    public Role update(@PathVariable Long id, @RequestBody Role role) {
+        // Chama o serviço para atualizar o role passando o ID e o objeto Role
+        return service.update(id, role);
     }
+
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         try {
             service.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body("Role excluído com sucesso!");
+        }catch (RoleNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Role não encontrado: " + ex.getMessage());
         } catch (Exception ex) {
-            return ResponseEntity.internalServerError().body("Erro ao excluir Role: " + ex.getMessage());
+     return ResponseEntity.internalServerError().body("Erro ao excluir Role: " + ex.getMessage());
         }
     }
 

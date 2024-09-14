@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
  * Entidade que representa uma configuração chave-valor do sistema.
  * Pode ser usada para armazenar parâmetros configuráveis da aplicação.
  *
+ * <p>
+ * Tipos de valores podem ser armazenados com diferentes tipos, como String, Integer, etc.
+ * </p>
+ *
  * @author Luciene Azevedo
  */
 
@@ -28,4 +32,20 @@ public class Configuracao {
 
     @Column(nullable = false)
     private String valor;
+
+    @Column(nullable = false)
+    private String tipoValor;
+
+    public Configuracao(String chave, String valor, String tipoValor){
+        this.chave = chave;
+        this.valor = valor;
+        this.tipoValor = tipoValor;
+
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id){
+        this.id = id;
+    }
 }

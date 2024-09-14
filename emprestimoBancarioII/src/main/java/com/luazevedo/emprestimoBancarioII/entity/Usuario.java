@@ -13,6 +13,7 @@ import java.util.Set;
  *
  * @author Luciene Azevedo
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,8 +25,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String senha;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -34,7 +37,19 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> role;
+    private Set<Role> roles;
+
+    /**
+     * Construtor para criar um usuário com username e senha.
+     *
+     * @param username        o nome de usuário
+     * @param senha           a senha do usuário
+     */
+
+    public Usuario(String username, String senha){
+        this.username = username;
+        this.senha = senha;
+    }
 }
 
 

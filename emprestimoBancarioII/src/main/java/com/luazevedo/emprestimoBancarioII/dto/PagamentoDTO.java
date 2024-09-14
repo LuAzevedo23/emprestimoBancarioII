@@ -1,5 +1,7 @@
 package com.luazevedo.emprestimoBancarioII.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.luazevedo.emprestimoBancarioII.entity.Emprestimo;
 import com.luazevedo.emprestimoBancarioII.entity.enums.StatusPagamento;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ public class PagamentoDTO {
     //@NotBlank ou @NotNull: @NotBlank é usado para Strings, enquanto @NotNull é mais apropriado
     // para tipos numéricos e objetos.
 
+    @JsonProperty
     @NotNull(message = "O ID não pode ser nulo")
     private Long id;
 
@@ -27,7 +30,7 @@ public class PagamentoDTO {
     private LocalDate dataPagamento;
 
     @NotNull(message = "O campo empréstimo não pode ser nulo")
-    private Long emprestimoId;  // Referencia o ID do empréstimo
+    private Long emprestimoId;
 
     @NotNull(message = "O status não pode ser nulo")
     private StatusPagamento status;
@@ -41,6 +44,10 @@ public class PagamentoDTO {
 
     @NotNull(message = "O prazo em meses não pode ser nulo")
     private Integer prazoMeses;
+
+    @NotNull(message = "O valor total não pode ser nulo")
+    private BigDecimal valorTotal;
+
 }
 
 

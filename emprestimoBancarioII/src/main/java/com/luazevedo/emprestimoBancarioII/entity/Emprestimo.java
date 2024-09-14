@@ -1,14 +1,20 @@
 package com.luazevedo.emprestimoBancarioII.entity;
+
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * Entidade que representa um empréstimo.
+ * Entidade que representa um empréstimo no sistema.
  * <p>
  * Mapeia a tabela de empréstimos no banco de dados.
  * </p>
+ * @author Luciene Azevedo
  */
+@Data
 @Entity
 @Table(name = "emprestimos")
 public class Emprestimo {
@@ -17,42 +23,71 @@ public class Emprestimo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "valor", nullable = false)
+    @Column(nullable = false)
     private BigDecimal valor;
 
-    @Column(name = "taxa_juros", nullable = false)
+    @Column(nullable = false)
     private BigDecimal taxaJuros;
 
-    @Column(name = "prazo_meses", nullable = false)
+    @Column(nullable = false)
     private Integer prazoMeses;
 
-    @Column(name = "numero_parcelas", nullable = false)
+    @Column(nullable = false)
     private Integer numeroParcelas;
 
-    @Column(name = "parcela", nullable = false)
+    @Column(nullable = false)
     private BigDecimal parcela;
 
-    @Column(name = "data_emprestimo", nullable = false)
+    @Column(nullable = false)
     private LocalDate dataEmprestimo;
 
-    @Column(name = "data_termino", nullable = false)
+    @Column(nullable = false)
     private LocalDate dataTermino;
 
-    @Column(name = "valor_total")
+    @Column(nullable = false)
     private BigDecimal valorTotal;
 
-    public Emprestimo(LocalDate dataInicial, LocalDate dataFinal) {
-    }
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente; // Cliente associado ao empréstimo
+
     /**
-     * Construtor padrão sem argumentos.
-     * <p>
-     * Necessário para frameworks como Hibernate que requerem um construtor padrão para instanciar a entidade.
-     * </p>
+     * Construtor para criação de um empréstimo com todos os campos obrigatórios.
+     *
+     * @param valor          o valor do empréstimo
+     * @param taxaJuros      a taxa de juros aplicada ao empréstimo
+     * @param prazoMeses     o prazo do empréstimo em meses
+     * @param numeroParcelas o número de parcelas
+     * @param parcela        o valor de cada parcela
+     * @param dataEmprestimo a data em que o empréstimo foi realizado
+     * @param dataTermino    a data de término do empréstimo
+     * @param valorTotal     o valor total do empréstimo
      */
-    public Emprestimo() {
-        // Construtor padrão sem argumentos
+
+    public Emprestimo(BigDecimal valor, BigDecimal taxaJuros, Integer prazoMeses, Integer numeroParcelas,
+                      BigDecimal parcela, LocalDate dataEmprestimo, LocalDate dataTermino,
+                      BigDecimal valorTotal) {
+
+        this.valor = valor;
+        this.taxaJuros = taxaJuros;
+        this.prazoMeses = prazoMeses;
+        this.numeroParcelas = numeroParcelas;
+        this.parcela = parcela;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataTermino = dataTermino;
+        this.valorTotal = valorTotal;
     }
 
+    public Emprestimo() {
+
+    }
+
+    /**
+     * //     * Método de callback para validação antes de persistir ou atualizar no banco de dados
+     * //     *
+     * //     * @throws IllegalArgumentException se o prazo em meses for nulo ou menor ou igual a zero.
+     * //
+     */
     @PrePersist
     @PreUpdate
     public void validate() {
@@ -61,7 +96,6 @@ public class Emprestimo {
         }
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -133,4 +167,17 @@ public class Emprestimo {
     public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
     }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 }
+
+
+
+
+

@@ -8,61 +8,66 @@ import com.luazevedo.emprestimoBancarioII.repository.EmprestimoRepository;
 import com.luazevedo.emprestimoBancarioII.util.CalculoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
- * Serviço para operações relacionadas a empréstimos.
- * <p>
- * Esta classe contém métodos para gerenciar operações de empréstimo, como cálculo de valor total do empréstimo.
- * </p>
+ * Servicos para operações relacionadas a empréstimos.
+ * Contém métodos para gerenciar operações de empréstimo, como cálculos de juros e parcelas.
  *
  * @see Emprestimo
  * @see EmprestimoDTO
  * @see EmprestimoMapper
  * @see CalculoUtil
  */
+
 @Service
 public class EmprestimoService {
 
-    @Autowired
-    private EmprestimoRepository emprestimoRepository;
+    private final EmprestimoRepository emprestimoRepository;
+    private final EmprestimoMapper emprestimoMapper;
 
     @Autowired
-    private EmprestimoMapper mapper;
-
+    public EmprestimoService(EmprestimoRepository emprestimoRepository, EmprestimoMapper emprestimoMapper) {
+        this.emprestimoRepository = emprestimoRepository;
+        this.emprestimoMapper = emprestimoMapper;
+    }
     /**
      * Calcula o valor total do empréstimo.
      *
      * @param emprestimoDTO O DTO do empréstimo.
      * @return O DTO atualizado com o valor total calculado.
      */
-    public EmprestimoDTO calcularValorTotal(EmprestimoDTO emprestimoDTO) {
-        // Converte DTO para entidade
-        Emprestimo emprestimo = mapper.paraEntity(emprestimoDTO);
 
-        // Calcula o valor total usando a utilitária
+    public EmprestimoDTO calcularValorTotal(EmprestimoDTO emprestimoDTO) {
+        Emprestimo emprestimo = emprestimoMapper.paraEntity(emprestimoDTO);
+
         BigDecimal valorTotal = CalculoUtil.calcularJuros(
                 emprestimo.getValor(),
                 emprestimo.getTaxaJuros(),
                 emprestimo.getPrazoMeses()
         );
-
-        // Atualiza o valor total no empréstimo
         emprestimo.setValorTotal(valorTotal);
 
-        // Converte a entidade de volta para DTO
-        return mapper.paraDTO(emprestimoRepository.save(emprestimo));
+        return emprestimoMapper.paraDTO(emprestimoRepository.save(emprestimo));
     }
 
     /**
      * Calcula o valor da parcela e o número total de parcelas para o empréstimo.
      *
-     * @param emprestimo A entidade do empréstimo.
-     * @return O empréstimo atualizado com o valor da parcela e o número total de parcelas.
+     * @param emprestimo  O empréstimo.
+     * @return O empréstimo atualizado com o valor da parcela e o número total das parcelas
      */
+
     public Emprestimo calcularParcelas(Emprestimo emprestimo) {
-        // Calcula o valor da parcela usando a utilitária
+        // Validação para garantir que os campos essenciais não são nulos
+        if (emprestimo.getValor() == null || emprestimo.getTaxaJuros() == null || emprestimo.getPrazoMeses() == null) {
+            throw new IllegalArgumentException("Valor, taxa de juros e prazo devem ser fornecidos.");
+        }
+
         BigDecimal parcela = CalculoUtil.calcularParcela(
                 emprestimo.getValor(),
                 emprestimo.getTaxaJuros(),
@@ -71,10 +76,8 @@ public class EmprestimoService {
         emprestimo.setParcela(parcela);
         emprestimo.setNumeroParcelas(emprestimo.getPrazoMeses());
 
-        // Salva o empréstimo atualizado
         return emprestimoRepository.save(emprestimo);
     }
-
     /**
      * Encontra um empréstimo pelo ID.
      *
@@ -82,29 +85,30 @@ public class EmprestimoService {
      * @return O DTO do empréstimo.
      * @throws EmprestimoNotFoundException Se o empréstimo não for encontrado.
      */
-    public EmprestimoDTO findById(Long id) {
+    public EmprestimoDTO findById(Long id){
         Emprestimo emprestimo = emprestimoRepository.findById(id)
-                .orElseThrow(() -> new EmprestimoNotFoundException("Empréstimo não encontrado com ID: " + id));
-        return mapper.paraDTO(emprestimo);
+        .orElseThrow(() -> new EmprestimoNotFoundException("Empréstimo nõ encontrado com ID: " + id));
+        return emprestimoMapper.paraDTO(emprestimo);
     }
 
+
+    public List<EmprestimoDTO> findAll(){
+        List<Emprestimo> emprestimos = emprestimoRepository.findAll();
+        return emprestimos.stream()
+                .map(emprestimoMapper::paraDTO)
+                .collect(Collectors.toList());
+    }
     /**
      * Salva um novo empréstimo ou atualiza um empréstimo existente.
      *
      * @param emprestimoDTO O DTO do empréstimo.
      * @return O DTO do empréstimo salvo ou atualizado.
      */
-    public EmprestimoDTO save(EmprestimoDTO emprestimoDTO) {
-        // Converte DTO para entidade
-        Emprestimo emprestimo = mapper.paraEntity(emprestimoDTO);
-
-        // Salva ou atualiza o empréstimo
+    public EmprestimoDTO save(EmprestimoDTO emprestimoDTO){
+        Emprestimo emprestimo = emprestimoMapper.paraEntity(emprestimoDTO);
         Emprestimo emprestimoSalvo = emprestimoRepository.save(emprestimo);
-
-        // Converte a entidade de volta para DTO
-        return mapper.paraDTO(emprestimoSalvo);
+        return emprestimoMapper.paraDTO(emprestimoSalvo);
     }
-
     /**
      * Atualiza um empréstimo existente.
      *
@@ -113,11 +117,10 @@ public class EmprestimoService {
      * @return O DTO do empréstimo atualizado.
      * @throws EmprestimoNotFoundException Se o empréstimo não for encontrado.
      */
-    public EmprestimoDTO update(Long id, Emprestimo emprestimoDTO) {
+    public EmprestimoDTO update(Long id, EmprestimoDTO emprestimoDTO){
         Emprestimo emprestimoExistente = emprestimoRepository.findById(id)
                 .orElseThrow(() -> new EmprestimoNotFoundException("Empréstimo não encontrado com ID: " + id));
 
-        // Atualiza os dados do empréstimo existente com os dados do DTO
         emprestimoExistente.setValor(emprestimoDTO.getValor());
         emprestimoExistente.setTaxaJuros(emprestimoDTO.getTaxaJuros());
         emprestimoExistente.setPrazoMeses(emprestimoDTO.getPrazoMeses());
@@ -128,22 +131,21 @@ public class EmprestimoService {
         emprestimoExistente.setValorTotal(emprestimoDTO.getValorTotal());
 
         Emprestimo emprestimoAtualizado = emprestimoRepository.save(emprestimoExistente);
-        return mapper.paraDTO(emprestimoAtualizado);
+        return emprestimoMapper.paraDTO(emprestimoAtualizado);
     }
-
     /**
      * Deleta um empréstimo pelo ID.
      *
      * @param id O ID do empréstimo a ser deletado.
      * @throws EmprestimoNotFoundException Se o empréstimo não for encontrado.
+     *
      */
-    public void delete(Long id) {
-        if (!emprestimoRepository.existsById(id)) {
+    public void delete(Long id){
+        if (!emprestimoRepository.existsById(id)){
             throw new EmprestimoNotFoundException("Empréstimo não encontrado com ID: " + id);
         }
         emprestimoRepository.deleteById(id);
     }
-
     /**
      * Calcula o prazo entre duas datas e atualiza o DTO do empréstimo.
      *
@@ -151,24 +153,24 @@ public class EmprestimoService {
      * @return O DTO do empréstimo com o prazo calculado.
      */
     public EmprestimoDTO calcularPrazoEntreDatas(EmprestimoDTO emprestimoDTO) {
-        // Converte DTO para entidade
-        Emprestimo emprestimo = mapper.paraEntity(emprestimoDTO);
+        Emprestimo emprestimo = emprestimoMapper.paraEntity(emprestimoDTO);
 
-        // Verifica se as datas são nulas para evitar NullPointerException
+        // Validação para garantir que as datas não sejam nulas
         if (emprestimo.getDataEmprestimo() == null || emprestimo.getDataTermino() == null) {
-            throw new IllegalArgumentException("Datas de início e fim devem ser fornecidas.");
+            throw new IllegalArgumentException("As datas de início e término devem ser fornecidas.");
         }
 
-        // Calcula o prazo entre as datas
+        // Validação para garantir que a data de término seja posterior à data de início
+        if (emprestimo.getDataTermino().isBefore(emprestimo.getDataEmprestimo())) {
+            throw new IllegalArgumentException("A data de término não pode ser anterior à data de início.");
+        }
+
         Integer prazoMeses = CalculoUtil.calcularPrazoEntreDatas(
                 emprestimo.getDataEmprestimo(),
                 emprestimo.getDataTermino()
         );
-
-        // Atualiza o prazo no empréstimo
         emprestimo.setPrazoMeses(prazoMeses);
 
-        // Converte a entidade de volta para DTO
-        return mapper.paraDTO(emprestimo);
+        return emprestimoMapper.paraDTO(emprestimo);
     }
 }
