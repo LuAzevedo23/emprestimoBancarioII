@@ -22,13 +22,18 @@ import java.util.stream.Collectors;
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
 
     @Autowired
     public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
+    }
+
+    public Usuario salvar(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 /**
  * Salva um novo usuário.
@@ -95,4 +100,5 @@ public void delete(Long id){
     }
 }
 
-        }
+
+}

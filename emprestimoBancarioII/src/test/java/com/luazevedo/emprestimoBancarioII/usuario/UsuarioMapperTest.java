@@ -1,4 +1,4 @@
-package com.luazevedo.emprestimoBancarioII;
+package com.luazevedo.emprestimoBancarioII.usuario;
 
 import com.luazevedo.emprestimoBancarioII.dto.UsuarioDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Role;

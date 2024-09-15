@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.json.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
@@ -15,17 +16,18 @@ public class ExceptionResponse {
 
     String error;
     String url;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     Instant dataHora;
 
     /**
-     * Construtor para criar uma instância de ExceptionResponse.
+     * Contrutor para criar uma instância de ExceptionResponse.
      *
-     * @param ex   Exceção que gerou a resposta.
-     * @param url  URL onde ocorreu o erro.
+     * @param ex Exceção que gerou a resposta.
+     * @param url URL onde ocorreu o erro.
      */
     public ExceptionResponse(Exception ex, String url) {
         error = ex.getMessage();
-        dataHora = Calendar.getInstance().toInstant();
+        dataHora = Instant.now();
         this.url = url;
     }
 
@@ -38,7 +40,7 @@ public class ExceptionResponse {
     public ExceptionResponse(String message, String uri) {
         this.error = message;
         this.url = uri;
-        this.dataHora = Calendar.getInstance().toInstant();
+        this.dataHora = Instant.now();
     }
 
 }

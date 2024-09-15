@@ -44,4 +44,11 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+
+	// Configurações para o logging do teste
+	testLogging {
+		events "passed", "skipped", "failed" // Exibe eventos de teste
+		exceptionFormat "full" // Mostra a stack trace completa das falhas
+		showStandardStreams = true // Exibe a saída padrão dos testes
+	}
 }

@@ -25,6 +25,23 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
+    /**
+     * Salva uma nova role no repositório.
+     *
+     * @param role a role a ser salva
+     * @return a role salva
+     */
+    public Role salvarRole (Role role) {
+        return roleRepository.save(role);
+    }
+
+    /**
+     * Exclui uma role pela ID.
+     *
+     * @param id o ID da rele a ser excluída.
+     * @throws RoleNotFoundException se a role não for encontrada.
+     */
+
     public void delete(Long id) throws RoleNotFoundException {
         Role role = roleRepository.findById(id)
                 .orElseThrow(()-> new RoleNotFoundException("Role não encontrado com ID: " + id));

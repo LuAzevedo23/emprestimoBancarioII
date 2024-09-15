@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/emprestimoBancarioII.iml" filepath="$PROJECT_DIR$/.idea/emprestimoBancarioII.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emprestimoBancarioII.emprestimoBancarioII.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/emprestimoBancarioII.emprestimoBancarioII.main~1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emprestimoBancarioII.emprestimoBancarioII.main.iml" filepath="$PROJECT_DIR$/.idea/modules/emprestimoBancarioII.emprestimoBancarioII.main.iml" />
     </modules>
   </component>
 </project>

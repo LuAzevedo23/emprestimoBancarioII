@@ -34,6 +34,8 @@ public class UsuarioController {
     @Autowired
     private UsuarioMapper mapper;
 
+
+
     @ApiOperation(value = "Retorna todos os usuários", response = List.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Usuários retornados com sucesso"),
@@ -56,9 +58,9 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody UsuarioDTO usuarioDTO) {
-        service.save(usuarioDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Usuario salvo com sucesso");
+    public ResponseEntity<UsuarioDTO> save(@RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO savedUsuario = service.save(usuarioDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }
 
     @PutMapping("/{id}")
@@ -82,4 +84,6 @@ public class UsuarioController {
         ExceptionResponse response = new ExceptionResponse(ex, request.getRequestURI());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+
 }
