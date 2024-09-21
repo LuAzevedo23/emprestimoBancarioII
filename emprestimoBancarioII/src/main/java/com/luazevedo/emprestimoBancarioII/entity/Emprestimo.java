@@ -1,9 +1,8 @@
 package com.luazevedo.emprestimoBancarioII.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -17,38 +16,49 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "emprestimos")
+@Schema(description = "Representa um empréstimo no sistema")
 public class Emprestimo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único do empréstimo.", example = "1", required = true)
     private Long id;
 
     @Column(nullable = false)
+    @Schema(description = "Valor total do empréstimo.", example = "10000.00", required = true)
     private BigDecimal valor;
 
     @Column(nullable = false)
+    @Schema(description = "Taxa de juros aplicada ao empréstimo.", example = "5.0", required = true)
     private BigDecimal taxaJuros;
 
     @Column(nullable = false)
+    @Schema(description = "Prazo em meses do pagamento.", example = "12", required = true)
     private Integer prazoMeses;
 
     @Column(nullable = false)
+    @Schema(description = "Número de parcelas do pagamento.", example = "12", required = true)
     private Integer numeroParcelas;
 
     @Column(nullable = false)
+    @Schema(description = "Valor de cada parcela.")
     private BigDecimal parcela;
 
     @Column(nullable = false)
+    @Schema(description = "Data em que o empréstimo foi solicitado.")
     private LocalDate dataEmprestimo;
 
     @Column(nullable = false)
+    @Schema(description = "Data em que o empréstimo termina.")
     private LocalDate dataTermino;
 
     @Column(nullable = false)
+    @Schema(description = "Valor total a ser pago, incluindo juros.")
     private BigDecimal valorTotal;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @Schema(description = "Cliente associado ao empréstimo.")
     private Cliente cliente; // Cliente associado ao empréstimo
 
     /**

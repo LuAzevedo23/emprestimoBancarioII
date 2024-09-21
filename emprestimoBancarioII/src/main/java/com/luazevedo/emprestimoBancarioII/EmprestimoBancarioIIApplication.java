@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.luazevedo.emprestimoBancarioII")
+//@ComponentScan(basePackages = "com.luazevedo.emprestimoBancarioII")
 public class EmprestimoBancarioIIApplication {
 
     public static void main(String[] args) {

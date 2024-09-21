@@ -1,15 +1,13 @@
 package com.luazevedo.emprestimoBancarioII.controller;
 
 import com.luazevedo.emprestimoBancarioII.dto.GarantiaDTO;
-import com.luazevedo.emprestimoBancarioII.entity.Garantia;
 import com.luazevedo.emprestimoBancarioII.exception.AbstractMinhaException;
 import com.luazevedo.emprestimoBancarioII.exception.GarantiaNotFoundException;
 import com.luazevedo.emprestimoBancarioII.json.response.ExceptionResponse;
 import com.luazevedo.emprestimoBancarioII.mapper.GarantiaMapper;
 import com.luazevedo.emprestimoBancarioII.service.GarantiaService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 /**
  * Controller responsável por operações relacionadas a Garantia.
@@ -37,15 +34,15 @@ public class GarantiaController {
      *
      * @return Lista de GarantiaDTO
      */
-    @ApiOperation(value = "Retorna todas as garantias", response = List.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Garantias retornadas com sucesso"),
-            @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
-            @ApiResponse(code = 404, message = "Recurso não encontrado"),
-            @ApiResponse(code = 422, message = "Dados de requisição inválida"),
-            @ApiResponse(code = 500, message = "Erro ao realizar busca dos dados")
+    @Operation(description = "Retorna todas as garantias", responses = {
+            @ApiResponse(responseCode = "200", description = "Garantias retornadas com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Você não está autorizado a ver este recurso"),
+            @ApiResponse(responseCode = "403", description = "Acesso ao recurso proibido"),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+            @ApiResponse(responseCode = "422", description = "Dados de requisição inválida"),
+            @ApiResponse(responseCode = "500", description = "Erro ao realizar busca dos dados")
     })
+
     @GetMapping
     public List<GarantiaDTO> findAll() {
         return garantiaService.findAll();
@@ -81,14 +78,14 @@ public class GarantiaController {
      * @param garantiaDTO DTO da garantia a ser atualizada
      * @return Mensagem de sucesso
      */
-    @PutMapping ("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<GarantiaDTO> update(@PathVariable Long id, @RequestBody GarantiaDTO garantiaDTO) {
         try {
-            GarantiaDTO updatedGarantia = garantiaService.update(id,garantiaDTO);
+            GarantiaDTO updatedGarantia = garantiaService.update(id, garantiaDTO);
             return ResponseEntity.ok(updatedGarantia); //Retorna o DTO atualizado.
         } catch (GarantiaNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); //Retorna 404 se a Garantia não for encontrada
-        } catch (Exception ex){
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); //Retorna 500 em caso de erro
         }
     }
@@ -112,7 +109,7 @@ public class GarantiaController {
     /**
      * Manipula exceções do tipo AbstractMinhaException.
      *
-     * @param ex Exceção lançada
+     * @param ex      Exceção lançada
      * @param request Detalhes da requisição
      * @return Resposta de erro personalizada
      * @throws IOException em caso de erro

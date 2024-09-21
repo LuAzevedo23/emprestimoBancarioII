@@ -1,22 +1,13 @@
 package com.luazevedo.emprestimoBancarioII.controller;
 
 import com.luazevedo.emprestimoBancarioII.dto.HistoricoEmprestimoDTO;
-import com.luazevedo.emprestimoBancarioII.exception.AbstractMinhaException;
-import com.luazevedo.emprestimoBancarioII.json.response.ExceptionResponse;
-import com.luazevedo.emprestimoBancarioII.repository.HistoricoEmprestimoRepository;
 import com.luazevedo.emprestimoBancarioII.service.HistoricoEmprestimoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/historico-emprestimos")
-@Api(value = "HistoricoEmprestimoController", tags = "Historico-Emprestimos")
+//@Api(value = "HistoricoEmprestimoController", tags = "Historico-Emprestimos")
 public class HistoricoEmprestimoController {
 
     private HistoricoEmprestimoService historicoEmprestimoService;
@@ -37,14 +28,13 @@ public class HistoricoEmprestimoController {
         this.historicoEmprestimoService = historicoEmprestimoService;
     }
 
-    @ApiOperation(value = "Retorna todos os historicos de empréstimos", response = List.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Historicos de empréstimos retornados com sucesso"),
-            @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
-            @ApiResponse(code = 404, message = "Recurso não encontrado"),
-            @ApiResponse(code = 422, message = "Dados de requisição inválida"),
-            @ApiResponse(code = 500, message = "Erro ao realizar busca dos dados")
+    @Operation(description = "Retorna todos os historicos de empréstimos", responses = {
+            @ApiResponse(responseCode = "200", description = "Historicos de empréstimos retornados com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Você não está autorizado a ver este recurso"),
+            @ApiResponse(responseCode = "403", description = "Acesso ao recurso proibido"),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+            @ApiResponse(responseCode = "422", description = "Dados de requisição inválida"),
+            @ApiResponse(responseCode = "500", description = "Erro ao realizar busca dos dados")
     })
 
     /**

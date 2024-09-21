@@ -1,11 +1,11 @@
 package com.luazevedo.emprestimoBancarioII.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,13 +20,16 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "roles")
+@Schema(description = "Entidade que representa um papel (role) atribuído a um usuário no sistema.")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "O ID único do role", example = "1", required = true)
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Schema(description = "Nome do papel (role) atribuído ao usuário.", example = "ROLE_USER", required = true)
     private String nome;
 
     @ManyToMany(mappedBy = "roles")

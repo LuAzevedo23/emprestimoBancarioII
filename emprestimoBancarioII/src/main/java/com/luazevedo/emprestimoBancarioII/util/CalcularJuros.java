@@ -7,33 +7,41 @@ import java.math.RoundingMode;
  * Classe utilitária para cálculos de juros.
  */
 public class CalcularJuros {
+    public static double calcularMontanteJurosSimples(double principal, double taxaJuros, double tempo){
+        double taxaDecimal = taxaJuros / 100;
+        return principal + (principal * taxaDecimal * tempo);
 
-    /**
-     * Calcula o montante total de um empréstimo com juros simples.
-     *
-     * @param valor  O valor  do empréstimo.
-     * @param taxaJuros  A taxa de juros (em decimal, por exemplo, 0.05 para 5%).
-     * @param prazoAnos  O prazo do empréstimo em anos.
-     * @return O montante total a ser pago.
-     */
-    public static BigDecimal calcularMontanteJurosSimples(BigDecimal valor, BigDecimal taxaJuros, int prazoAnos) {
-        BigDecimal juros = valor.multiply(taxaJuros).multiply(BigDecimal.valueOf(prazoAnos));
-        return valor.add(juros).setScale(2, RoundingMode.HALF_UP);
     }
 
-    /**
-     * Calcula o montante total de um empréstimo com juros compostos.
-     *
-     * @param valor  O valor do empréstimo.
-     * @param taxaJuros  A taxa de juros (em decimal, por exemplo, 0.05 para 5%).
-     * @param prazoMeses  O prazo do empréstimo em meses.
-     * @return O montante total a ser pago.
-     */
-    public static BigDecimal calcularMontanteJurosCompostos(BigDecimal valor, BigDecimal taxaJuros, int prazoMeses) {
-        BigDecimal taxaMensal = taxaJuros.divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP);
-        BigDecimal montante = valor.multiply(
+    public static BigDecimal calcularMontanteJurosCompostos(BigDecimal capital, BigDecimal taxaJuros, int prazoMeses) {
+        if (capital.compareTo(BigDecimal.ZERO) <= 0 || taxaJuros.compareTo(BigDecimal.ZERO) <= 0 || prazoMeses <= 0) {
+            throw new IllegalArgumentException("Todos os parâmetros devem ser positivos.");
+        }
+        BigDecimal taxaMensal = taxaJuros;
+        BigDecimal montante = capital.multiply(
                 BigDecimal.ONE.add(taxaMensal).pow(prazoMeses)
-        );
+                );
         return montante.setScale(2, RoundingMode.HALF_UP);
+
+    }
+    //Método para calcular juros simples
+    public static double calcularJurosSimples(double capital, double taxa, int tempo) {
+        return capital * taxa * tempo; // Retorna apenas os juros
+    }
+    //Método para calcular juros compostos
+    public static double calcularJurosCompostos(double capital, double taxa, int tempo){
+        return capital * Math.pow((1 + taxa), tempo) - capital; //Aqui retorna apenas os juros
+    }
+    //Método para calcular o montante total com base no tipo de juros
+    public static BigDecimal calcularJuros(BigDecimal valor, BigDecimal taxaJuros, Integer prazoMeses, boolean jurosCompostos){
+       if (valor.compareTo(BigDecimal.ZERO)<= 0 || taxaJuros.compareTo(BigDecimal.ZERO)<= 0 || prazoMeses <= 0){
+           throw new IllegalArgumentException("Todos os parâmetros devem ser positivos.");
+       }
+       if(jurosCompostos){
+           return calcularMontanteJurosCompostos(valor, taxaJuros, prazoMeses);
+       }else {
+           double montanteSimples = calcularMontanteJurosSimples(valor.doubleValue(), taxaJuros.doubleValue(), prazoMeses);
+           return BigDecimal.valueOf(montanteSimples).setScale(2,RoundingMode.HALF_UP);
+       }
     }
 }

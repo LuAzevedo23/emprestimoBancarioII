@@ -2,12 +2,9 @@ package com.luazevedo.emprestimoBancarioII.controller;
 
 import com.luazevedo.emprestimoBancarioII.dto.EmprestimoDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Emprestimo;
-import com.luazevedo.emprestimoBancarioII.exception.EmprestimoNotFoundException;
 import com.luazevedo.emprestimoBancarioII.service.EmprestimoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,22 +23,21 @@ import java.util.List;
  * @see Emprestimo
  */
 @RestController
-@RequestMapping("/emprestimos")
-@Api(value = "EmprestimoController", tags = "Emprestimos")
+@RequestMapping("/api/v1/emprestimos")
+//@Api(value = "EmprestimoController", tags = "Emprestimos")
 public class EmprestimoController {
 
     @Autowired
     private EmprestimoService emprestimoService;
 
-    @Operation(summary = "Busca todos os empréstimos", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Busca realizada com sucesso"),
-            @ApiResponse(code = 400, message = "Parâmetros inválidos"),
-            @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
-            @ApiResponse(code = 404, message = "Recurso não encontrado"),
-            @ApiResponse(code = 422, message = "Dados de requisição inválidos"),
-            @ApiResponse(code = 500, message = "Erro ao realizar busca dos dados")
+    @Operation(description = "Busca todos os empréstimos", responses = {
+            @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Parâmetros inválidos"),
+            @ApiResponse(responseCode = "401", description = "Você não está autorizado a ver este recurso"),
+            @ApiResponse(responseCode = "403", description = "Acesso ao recurso proibido"),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+            @ApiResponse(responseCode = "422", description = "Dados de requisição inválidos"),
+            @ApiResponse(responseCode = "500", description = "Erro ao realizar busca dos dados")
     })
 
     @GetMapping

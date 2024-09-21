@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,17 +19,21 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
+@Schema(description = "Representa um usuário do sistema.")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único do usuário.")
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Schema(description = "Nome de usuário único.")
     private String username;
 
     @Column(nullable = false)
+    @Schema(description = "Senha do usuário.")
     private String senha;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -37,6 +42,7 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @Schema(description="Conjunto de roles associados ao usuário.")
     private Set<Role> roles;
 
     /**

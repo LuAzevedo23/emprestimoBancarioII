@@ -4,9 +4,8 @@ import com.luazevedo.emprestimoBancarioII.dto.ClienteDTO;
 import com.luazevedo.emprestimoBancarioII.exception.AbstractMinhaException;
 import com.luazevedo.emprestimoBancarioII.json.response.ExceptionResponse;
 import com.luazevedo.emprestimoBancarioII.service.ClienteService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,22 +27,19 @@ public class ClienteController {
 
 private final ClienteService clienteService;
 
-   @ApiOperation(value = "Retorna todos os clientes", response = List.class)
-         @ApiResponses(value = {
-          @ApiResponse(code = 200, message = "Clientes retornados com sucesso"),
-        @ApiResponse(code = 401, message = "Você não está autorizado a ver este recurso"),
-         @ApiResponse(code = 403, message = "Acesso ao recurso proibido"),
-         @ApiResponse(code = 404, message = "Recurso não encontrado")
+   @Operation(description = "Retorna todos os clientes", responses = {
+        @ApiResponse(responseCode = "200", description = "Clientes retornados com sucesso"),
+           @ApiResponse(responseCode = "401", description = "Você não está autorizado a ver este recurso"),
+           @ApiResponse(responseCode = "403", description = "Acesso ao recurso proibido"),
+           @ApiResponse(responseCode = "404", description = "Recurso não encontrado")
    })
-    /**
-     * Retorna todos os clientes.
-     *
-     * @return Lista de ClienteDTOs.
-     */
-    @GetMapping
-    public List<ClienteDTO> findAll() {
-        return clienteService.findAll();
-    }
+
+   @GetMapping
+   public ResponseEntity<List<ClienteDTO>> findAll() {
+       List<ClienteDTO> clientes = clienteService.findAll(); // Método do serviço para buscar todos os clientes
+       return ResponseEntity.ok(clientes);
+   }
+
     /**
      * Retorna um cliente pelo ID.
      *

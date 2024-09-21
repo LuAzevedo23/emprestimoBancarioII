@@ -26,7 +26,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	implementation 'org.postgresql:postgresql'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
@@ -34,10 +35,10 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
-	implementation 'io.springfox:springfox-swagger2:3.0.0'
-	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+//	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+
 
 //implementation 'org.springdoc:springdoc-openapi-ui:2.0.2'
 }
@@ -45,10 +46,31 @@ dependencies {
 test {
 	useJUnitPlatform()
 
-	// Configurações para o logging do teste
-	testLogging {
-		events "passed", "skipped", "failed" // Exibe eventos de teste
-		exceptionFormat "full" // Mostra a stack trace completa das falhas
-		showStandardStreams = true // Exibe a saída padrão dos testes
+	// Configurações de logging do teste
+	test {
+		testLogging {
+			events "passed", "skipped", "failed"
+			exceptionFormat "full"
+			showStandardStreams = true
+		}
+
+		// Tarefa para personalizar o relatório HTML
+		finalizedBy('customizeTestReport')
+	}
+
+	task customizeTestReport {
+		doLast {
+			def reportFile = file("${buildDir}/reports/tests/test/index.html")
+			if (reportFile.exists()) {
+				def projectName = "EmprestimoBancario"
+				def authorName = "Luciene Azevedo"
+				def content = reportFile.text
+
+				// Adiciona o nome do projeto e a autoria ao cabeçalho do relatório HTML
+				def customHeader = "<h1>Relatório de Testes - Projeto: ${projectName}</h1><h3>Autoria: ${authorName}</h3>"
+				content = content.replaceFirst("<body>", "<body>" + customHeader)
+				reportFile.text = content
+			}
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.luazevedo.emprestimoBancarioII.entity;
 
 import com.luazevedo.emprestimoBancarioII.entity.enums.StatusPagamento;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,34 +20,43 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "pagamento")
+@Table(name = "pagamentos")
+@Schema(description = "Representa o pagamento do empréstimo no sistema")
 public class Pagamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único do pagamento.")
     private Long id;
 
     @Column(nullable = false)
+    @Schema(description = "Identificador único do pagamento.", example = "1", required = true)
     private BigDecimal valor;
 
     @Column(nullable = false)
+    @Schema(description = "Taxa de juros aplicada ao pagamento.", example = "5.0", required = true)
     private BigDecimal taxaJuros;
 
     @Column(nullable = false)
+    @Schema(description = "Prazo em meses do pagamento.", example = "12", required = true)
     private Integer prazoMeses;
 
     @Column(nullable = false)
+    @Schema(description = "Data em que o pagamento foi realizado.", example = "2024-09-01", required = true)
     private LocalDate dataPagamento;
 
     @ManyToOne
     @JoinColumn(name = "emprestimo_id", nullable = false)
+    @Schema(description = "Empréstimo associado ao pagamento.")
     private Emprestimo emprestimo;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Schema(description = "Status do pagamento.", required = true)
     private StatusPagamento status;
 
     @Column(nullable = false)
+    @Schema(description = "Valor total a ser pago, incluindo juros.", example = "1650.00", required = true)
     private BigDecimal valorTotal;
 
     /**

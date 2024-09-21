@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,19 +22,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "configuracao")
+@Schema(description =  "Entidade configuracao que representa uma chave e seu valor no sistema")
 public class Configuracao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "O ID único do configuracao", example = "1", required = true)
     private Long id;
 
     @Column(nullable = false)
+    @Schema(description = "Chave da configuracao", example = "email.smtp", required = true)
     private String chave;
 
     @Column(nullable = false)
+    @Schema(description = "Valor da configuração", example = "smtp.gmail.com", required = true)
     private String valor;
 
     @Column(nullable = false)
+    @Schema(description = "Tipo de valor da configuração", example = "String", required = true)
     private String tipoValor;
 
     public Configuracao(String chave, String valor, String tipoValor){

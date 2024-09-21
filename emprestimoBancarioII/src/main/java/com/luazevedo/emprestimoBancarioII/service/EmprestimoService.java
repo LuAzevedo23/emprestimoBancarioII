@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +44,13 @@ public class EmprestimoService {
     public EmprestimoDTO calcularValorTotal(EmprestimoDTO emprestimoDTO) {
         Emprestimo emprestimo = emprestimoMapper.paraEntity(emprestimoDTO);
 
+        if(emprestimo.getValor() == null || emprestimo.getTaxaJuros() == null || emprestimo.getPrazoMeses() == null) {
+         throw new IllegalArgumentException("Valor, taxa de juros e prazo devem ser fornecidos");
+        }
+        //Converte BigDecimal para double
+        double valor = emprestimo.getValor().doubleValue();
+        double taxaJuros = emprestimo.getTaxaJuros().doubleValue();
+
         BigDecimal valorTotal = CalculoUtil.calcularJuros(
                 emprestimo.getValor(),
                 emprestimo.getTaxaJuros(),
@@ -67,10 +73,13 @@ public class EmprestimoService {
         if (emprestimo.getValor() == null || emprestimo.getTaxaJuros() == null || emprestimo.getPrazoMeses() == null) {
             throw new IllegalArgumentException("Valor, taxa de juros e prazo devem ser fornecidos.");
         }
-
+        //Converte BigDecimal para double
+        double valor = emprestimo.getValor().doubleValue();
+        double taxaJuros = emprestimo.getTaxaJuros().doubleValue()
+;
         BigDecimal parcela = CalculoUtil.calcularParcela(
-                emprestimo.getValor(),
-                emprestimo.getTaxaJuros(),
+                BigDecimal.valueOf(valor),
+                BigDecimal.valueOf(taxaJuros),
                 emprestimo.getPrazoMeses()
         );
         emprestimo.setParcela(parcela);

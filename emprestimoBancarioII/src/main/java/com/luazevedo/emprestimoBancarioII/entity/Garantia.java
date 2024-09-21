@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,20 +24,25 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "garantia")
+@Schema(description = "Entidade garantia representa a garantia do cliente no sistema.")
 public class Garantia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "O ID único da garantia", example = "1", required = true)
     private Long id;
 
     @Column(nullable = false)
+    @Schema(description = "Descrição da garantia.")
     private String descricao;
 
     @Column(nullable = false)
+    @Schema(description = "Valor da garantia.")
     private BigDecimal valor;
 
     @ManyToOne
     @JoinColumn(name = "emprestimo_id")
+    @Schema(description = "Empréstimo associado à garantia.")
     private Emprestimo emprestimo;
 
     /**

@@ -32,9 +32,4 @@ public class GlobalExceptionHandle {
     }
 
 }
-//    @ExceptionHandler(AbstractMinhaException.class)
-//    public ResponseEntity<ExceptionResponse> handleAbstractMinhaException(AbstractMinhaException ex, HttpServletRequest request) throws IOException {
-//        ExceptionResponse response = new ExceptionResponse(ex, request.getRequestURI());
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//    }
 

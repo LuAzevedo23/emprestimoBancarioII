@@ -11,22 +11,14 @@ import java.time.Period;
  */
 public class CalculoUtil {
 
-    /**
-     * Calcula o valor total de um empréstimo considerando o valor principal, a taxa de juros e o prazo em meses.
-     *
-     * @param valor O valor  do empréstimo.
-     * @param taxaJuros A taxa de juros aplicada ao empréstimo.
-     * @param prazoMeses O prazo do empréstimo em meses.
-     * @return O valor total do empréstimo após a aplicação dos juros.
-     */
-    public static BigDecimal calcularJuros(BigDecimal valor, BigDecimal taxaJuros, Integer prazoMeses) {
-        // Utiliza MathContext para definir a precisão do cálculo
-        MathContext mathContext = new MathContext(10);
 
-        // Fórmula básica para cálculo de juros simples (exemplo)
-        BigDecimal taxaMensal = taxaJuros.divide(BigDecimal.valueOf(100), mathContext);
-        BigDecimal fatorJuros = BigDecimal.ONE.add(taxaMensal).pow(prazoMeses);
-        return valor.multiply(fatorJuros, mathContext);
+    public static BigDecimal calcularJuros(BigDecimal principal, BigDecimal taxaJuros, int meses) {
+        if (principal == null || taxaJuros == null || meses <= 0) {
+            throw new IllegalArgumentException("Parâmetros inválidos para cálculo de juros");
+        }
+        BigDecimal taxaMensal = taxaJuros.divide(BigDecimal.valueOf(100));
+        BigDecimal juros = principal.multiply(taxaMensal).multiply(BigDecimal.valueOf(meses));
+        return principal.add(juros);
     }
 
     /**
