@@ -3,16 +3,13 @@ package com.luazevedo.emprestimoBancarioII.service;
 import com.luazevedo.emprestimoBancarioII.dto.PagamentoDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Pagamento;
 import com.luazevedo.emprestimoBancarioII.exception.PagamentoNotFoundException;
-import com.luazevedo.emprestimoBancarioII.exception.ValorNaoExistenteNaBaseDeDadosException;
 import com.luazevedo.emprestimoBancarioII.mapper.PagamentoMapper;
 import com.luazevedo.emprestimoBancarioII.repository.PagamentoRepository;
 import com.luazevedo.emprestimoBancarioII.util.CalculoUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Serviço para operações relacionadas aos pagamentos.

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Empréstimo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #003366;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e9ecef;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simulação de Empréstimo</h1>
+    <form id="loanForm">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Valor do Empréstimo</label>
+            <input type="number" id="amount" name="amount" required>
+        </div>
+        <div class="form-group">
+            <label for="installments">Número de Parcelas</label>
+            <input type="number" id="installments" name="installments" required>
+        </div>
+        <button type="submit">Calcular</button>
+    </form>
+
+    <div class="result" id="result" style="display:none;">
+        <h2>Resultado da Simulação</h2>
+        <p id="output"></p>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2024 Lu Azevedo - Simulação de Empréstimos</p>
+</div>
+
+<script>
+    document.getElementById('loanForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const installments = parseInt(document.getElementById('installments').value);
+
+        // Cálculo simples com juros de 5% ao mês
+        const interestRate = 0.05;
+        const totalAmount = amount * Math.pow(1 + interestRate, installments);
+        const installmentValue = totalAmount / installments;
+
+        // Exibir o resultado
+        document.getElementById('output').textContent =
+            `${name}, o valor total com juros será de R$ ${totalAmount.toFixed(2)}. ` +
+            `Cada parcela será de R$ ${installmentValue.toFixed(2)}.`;
+
+        document.getElementById('result').style.display = 'block';
+    });
+</script>
+</body>
+</html>
