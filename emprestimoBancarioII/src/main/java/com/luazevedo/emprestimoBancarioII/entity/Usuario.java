@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -43,7 +44,7 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     @Schema(description="Conjunto de roles associados ao usuário.")
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();;
 
     /**
      * Construtor para criar um usuário com username e senha.
@@ -56,6 +57,13 @@ public class Usuario {
         this.username = username;
         this.senha = senha;
     }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_role",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> role = new HashSet<>();
 }
 
 

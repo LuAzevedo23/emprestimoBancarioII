@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.service;
 
+import com.luazevedo.emprestimoBancarioII.dto.UsuarioCreateDTO;
 import com.luazevedo.emprestimoBancarioII.dto.UsuarioDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Usuario;
 import com.luazevedo.emprestimoBancarioII.exception.UsuarioNotFoundException;
@@ -38,13 +39,13 @@ public class UsuarioService {
 /**
  * Salva um novo usuário.
  *
- * @param usuarioDTO O DTO do usuáro a ser salvo.
+ * @param usuarioCreateDTO O DTO do usuáro a ser salvo.
  * @return o DTO do usuário salvo.
  */
-public UsuarioDTO save(UsuarioDTO usuarioDTO){
-    Usuario usuario = usuarioMapper.paraEntity(usuarioDTO);
-    Usuario usuarioSalvo = usuarioRepository.save(usuario);
-    return usuarioMapper.paraDTO(usuarioSalvo);
+public UsuarioDTO save(UsuarioCreateDTO usuarioCreateDTO) {
+    Usuario usuario = usuarioMapper.paraEntity(usuarioCreateDTO); // Método de mapeamento
+    Usuario savedUsuario = usuarioRepository.save(usuario);
+    return usuarioMapper.paraDTO(savedUsuario);
 }
     /**
      * Encontra um usuário pelo ID.

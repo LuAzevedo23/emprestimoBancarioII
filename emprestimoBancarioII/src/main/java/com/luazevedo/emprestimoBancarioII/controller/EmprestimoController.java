@@ -30,6 +30,11 @@ public class EmprestimoController {
     @Autowired
     private EmprestimoService emprestimoService;
 
+    @Autowired
+    public EmprestimoController(EmprestimoService emprestimoService) {
+        this.emprestimoService = emprestimoService;
+    }
+
     @Operation(description = "Busca todos os empréstimos", responses = {
             @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Parâmetros inválidos"),

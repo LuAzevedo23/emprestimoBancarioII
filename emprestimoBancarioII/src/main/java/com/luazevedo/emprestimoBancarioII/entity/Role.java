@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -33,7 +34,7 @@ public class Role {
     private String nome;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<Usuario> usuarios;
+    private Set<Usuario> usuarios = new HashSet<>();
 
     /**
      * COnstrutor para criar um papel com o nome especificado.
@@ -43,7 +44,14 @@ public class Role {
 
     public Role(String nome){
         this.nome = nome;
+    }
+    public void addUsuario(Usuario usuario) {
+        this.usuarios.add(usuario);
+        usuario.getRoles().add(this);
+    }
 
-
+    public void removeUsuario(Usuario usuario) {
+        this.usuarios.remove(usuario);
+        usuario.getRoles().remove(this);
     }
 }

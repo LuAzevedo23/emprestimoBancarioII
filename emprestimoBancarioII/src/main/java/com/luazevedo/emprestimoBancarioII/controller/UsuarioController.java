@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.controller;
 
+import com.luazevedo.emprestimoBancarioII.dto.UsuarioCreateDTO;
 import com.luazevedo.emprestimoBancarioII.dto.UsuarioDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Usuario;
 import com.luazevedo.emprestimoBancarioII.exception.AbstractMinhaException;
@@ -53,8 +54,8 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> save(@RequestBody UsuarioDTO usuarioDTO) {
-        UsuarioDTO savedUsuario = service.save(usuarioDTO);
+    public ResponseEntity<UsuarioDTO> save(@RequestBody UsuarioCreateDTO usuarioCreateDTO) {
+        UsuarioDTO savedUsuario = service.save(usuarioCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }
 

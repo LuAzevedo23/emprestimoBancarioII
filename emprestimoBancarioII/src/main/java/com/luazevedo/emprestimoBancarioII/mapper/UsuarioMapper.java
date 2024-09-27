@@ -1,5 +1,6 @@
 package com.luazevedo.emprestimoBancarioII.mapper;
 
+import com.luazevedo.emprestimoBancarioII.dto.UsuarioCreateDTO;
 import com.luazevedo.emprestimoBancarioII.dto.UsuarioDTO;
 import com.luazevedo.emprestimoBancarioII.entity.Usuario;
 import org.mapstruct.Mapper;
@@ -29,6 +30,16 @@ public interface UsuarioMapper {
      */
     @Mapping(target = "roles", source = "roles")
     Usuario paraEntity(UsuarioDTO usuarioDTO);
+
+    /**
+     * Converte um UsuarioCreateDTO para uma entidade Usuario.
+     *
+     * @param usuarioCreateDTO O DTO a ser convertido.
+     * @return A entidade Usuario correspondente.
+     */
+    @Mapping(target = "id", ignore = true) // Ignora o ID, pois não deve ser enviado na criação
+    @Mapping(target = "roles", source = "roles")
+    Usuario paraEntity(UsuarioCreateDTO usuarioCreateDTO);
 }
 
 

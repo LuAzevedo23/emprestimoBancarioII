@@ -5,6 +5,8 @@ import com.luazevedo.emprestimoBancarioII.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
 
@@ -14,6 +16,7 @@ public interface RoleMapper {
 
     RoleDTO paraDTO(Role role);
 
+    List<RoleDTO> paraDTO(List<Role> roles);
 }
 
 
